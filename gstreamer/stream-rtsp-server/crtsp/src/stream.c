@@ -42,7 +42,7 @@ main (int argc, char *argv[])
   GError *error = NULL;
 
   optctx = g_option_context_new ("<launch line> - Test RTSP Server, Launch\n\n"
-      "Example: \"( videotestsrc ! x264enc ! rtph264pay name=pay0 pt=96 )\"");
+      "Example: \"( filesrc location=video/GR2.mp4 ! x265enc ! rtph265pay name=pay0 pt=96 )\"");
   g_option_context_add_main_entries (optctx, entries, NULL);
   g_option_context_add_group (optctx, gst_init_get_option_group ());
   if (!g_option_context_parse (optctx, &argc, &argv, &error)) {
