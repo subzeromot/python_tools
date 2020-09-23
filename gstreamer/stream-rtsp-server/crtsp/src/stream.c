@@ -18,16 +18,18 @@
  */
 
 #include <gst/gst.h>
-
 #include <gst/rtsp-server/rtsp-server.h>
 
 #define DEFAULT_RTSP_PORT "8554"
-
+#define DEFAULT_URL "/test"
 static char *port = (char *) DEFAULT_RTSP_PORT;
+static char *url = (char *) DEFAULT_URL;
 
 static GOptionEntry entries[] = {
   {"port", 'p', 0, G_OPTION_ARG_STRING, &port,
       "Port to listen on (default: " DEFAULT_RTSP_PORT ")", "PORT"},
+  {"url", 'u', 0, G_OPTION_ARG_STRING, &url,
+      "url to listen on (default: " DEFAULT_URL ")", "URL"},
   {NULL}
 };
 
@@ -72,7 +74,7 @@ main (int argc, char *argv[])
   gst_rtsp_media_factory_set_shared (factory, TRUE);
 
   /* attach the test factory to the /test url */
-  gst_rtsp_mount_points_add_factory (mounts, "/test", factory);
+  gst_rtsp_mount_points_add_factory (mounts, url, factory);
 
   /* don't need the ref to the mapper anymore */
   g_object_unref (mounts);
@@ -81,7 +83,7 @@ main (int argc, char *argv[])
   gst_rtsp_server_attach (server, NULL);
 
   /* start serving */
-  g_print ("stream ready at rtsp://127.0.0.1:%s/test\n", port);
+  g_print ("stream ready at rtsp://127.0.0.1:%s%s\n", port, url);
   g_main_loop_run (loop);
 
   return 0;
